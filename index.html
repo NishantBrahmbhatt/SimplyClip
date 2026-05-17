@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SimplyClip — Clip & Download YouTube Videos</title>
+  <title>SimplyClip</title>
   <meta name="description" content="Clip and download any segment of any YouTube video. Select your quality, set your range, done. Free Chrome extension."/>
-  <meta property="og:title" content="SimplyClip — Clip & Download YouTube Videos"/>
+  <meta property="og:title" content="SimplyClip ÔÇö Clip & Download YouTube Videos"/>
   <meta property="og:description" content="Clip and download any segment of any YouTube video. Select your quality, set your range, done."/>
   <meta property="og:type" content="website"/>
   <link rel="icon" type="image/png" sizes="128x128" href="favicon.png"/>
@@ -40,7 +40,7 @@
       overflow-x: hidden;
     }
 
-    /* ── Nav ── */
+    /* ÔöÇÔöÇ Nav ÔöÇÔöÇ */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -111,7 +111,7 @@
 
     .nav-cta:hover { background: var(--burgundy-light) !important; }
 
-    /* ── Hero ── */
+    /* ÔöÇÔöÇ Hero ÔöÇÔöÇ */
     .hero {
       min-height: 100vh;
       display: flex;
@@ -137,7 +137,6 @@
     .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
       background: rgba(112,0,21,0.15);
       border: 1px solid rgba(112,0,21,0.3);
       color: #e88;
@@ -148,18 +147,15 @@
       margin-bottom: 32px;
       letter-spacing: 0.04em;
       text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
     }
 
-    .hero-badge span {
-      width: 6px; height: 6px;
-      background: #e88;
-      border-radius: 50%;
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    .hero-badge:hover {
+      background: rgba(112,0,21,0.25);
+      border-color: rgba(112,0,21,0.5);
+      color: #f0c0c8;
     }
 
     h1 {
@@ -231,7 +227,7 @@
 
     .btn-secondary:hover { background: #2a2a2a; }
 
-    /* ── Screenshot ── */
+    /* ÔöÇÔöÇ Screenshot ÔöÇÔöÇ */
     .screenshot-wrap {
       width: 100%;
       max-width: 900px;
@@ -263,7 +259,7 @@
       text-align: center;
     }
 
-    /* ── How it works ── */
+    /* ÔöÇÔöÇ How it works ÔöÇÔöÇ */
     .section {
       padding: 100px 40px;
       max-width: 1000px;
@@ -328,7 +324,7 @@
       line-height: 1.6;
     }
 
-    /* ── Features ── */
+    /* ÔöÇÔöÇ Features ÔöÇÔöÇ */
     .features {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -371,7 +367,7 @@
       line-height: 1.6;
     }
 
-    /* ── Setup section ── */
+    /* ÔöÇÔöÇ Setup section ÔöÇÔöÇ */
     .setup-section {
       padding: 100px 40px;
       background: var(--bg2);
@@ -445,7 +441,7 @@
 
     .setup-content a:hover { text-decoration: underline; }
 
-    /* ── FAQ ── */
+    /* ÔöÇÔöÇ FAQ ÔöÇÔöÇ */
     .faq-list {
       display: flex;
       flex-direction: column;
@@ -499,7 +495,7 @@
 
     .faq-item.open .faq-a { display: block; }
 
-    /* ── Footer CTA ── */
+    /* ÔöÇÔöÇ Footer CTA ÔöÇÔöÇ */
     .footer-cta {
       padding: 120px 40px;
       text-align: center;
@@ -515,7 +511,7 @@
       font-size: 16px;
     }
 
-    /* ── Footer ── */
+    /* ÔöÇÔöÇ Footer ÔöÇÔöÇ */
     footer {
       border-top: 1px solid var(--border);
       padding: 32px 40px;
@@ -553,7 +549,7 @@
 
     .footer-links a:hover { color: var(--text2); }
 
-    /* ── Responsive ── */
+    /* ÔöÇÔöÇ Responsive ÔöÇÔöÇ */
     @media (max-width: 640px) {
       nav { padding: 16px 20px; }
       .nav-links { display: none; }
@@ -585,10 +581,9 @@
 
   <!-- Hero -->
   <section class="hero">
-    <div class="hero-badge">
-      <span></span>
+    <a href="https://chromewebstore.google.com/search?q=SimplyClip" target="_blank" rel="noopener noreferrer" class="hero-badge">
       Free Chrome Extension
-    </div>
+    </a>
     <h1>Clip any YouTube video.<br/><em>Keep exactly what you want.</em></h1>
     <p class="hero-sub">Select a start and end point, choose your quality, download. No watermarks, no accounts, no nonsense.</p>
     <div class="hero-actions">
@@ -596,7 +591,7 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
         </svg>
-        Add to Chrome — It's free
+        Add to Chrome ÔÇö It's free
       </a>
       <a href="#setup" class="btn-secondary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -615,7 +610,7 @@
     </div>
     <div class="screenshot-wrap">
       <img src="screenshot.png" alt="SimplyClip extension showing a YouTube video being clipped"/>
-      <p class="screenshot-caption">SimplyClip in action — clipping a segment from a YouTube video at 1080p</p>
+      <p class="screenshot-caption">SimplyClip in action ÔÇö clipping a segment from a YouTube video at 1080p</p>
     </div>
   </section>
 
@@ -627,12 +622,12 @@
       <div class="step">
         <div class="step-num">01</div>
         <h3>Open any YouTube video</h3>
-        <p>Navigate to any YouTube video. SimplyClip adds a ✂ Clip button next to the Subscribe button automatically.</p>
+        <p>Navigate to any YouTube video. SimplyClip adds a Ô£é Clip button next to the Subscribe button automatically.</p>
       </div>
       <div class="step">
         <div class="step-num">02</div>
         <h3>Set your clip range</h3>
-        <p>Drag the timeline handles or type exact timestamps. Choose your quality — 360p up to 1080p. Press <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">[</kbd> and <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">]</kbd> while watching to mark your clip points.</p>
+        <p>Drag the timeline handles or type exact timestamps. Choose your quality ÔÇö 360p up to 1080p. Press <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">[</kbd> and <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">]</kbd> while watching to mark your clip points.</p>
       </div>
       <div class="step">
         <div class="step-num">03</div>
@@ -715,14 +710,14 @@
           <div class="setup-dot">1</div>
           <div class="setup-content">
             <h3>Add SimplyClip to Chrome</h3>
-            <p>Visit the <a href="https://chromewebstore.google.com" target="_blank">Chrome Web Store</a> and click "Add to Chrome". The ✂ Clip button will appear on YouTube automatically.</p>
+            <p>Visit the <a href="https://chromewebstore.google.com" target="_blank">Chrome Web Store</a> and click "Add to Chrome". The Ô£é Clip button will appear on YouTube automatically.</p>
           </div>
         </div>
         <div class="setup-step">
           <div class="setup-dot">2</div>
           <div class="setup-content">
             <h3>Download the helper app</h3>
-            <p>Click the SimplyClip icon in your Chrome toolbar, then click "Download Helper". Run the <code style="background:#1a1a1a;padding:2px 6px;border-radius:4px;font-size:12px;">SimplyClip_Helper.exe</code> file that downloads. Windows may show a security prompt — click "More info" then "Run anyway".</p>
+            <p>Click the SimplyClip icon in your Chrome toolbar, then click "Download Helper". Run the <code style="background:#1a1a1a;padding:2px 6px;border-radius:4px;font-size:12px;">SimplyClip_Helper.exe</code> file that downloads. Windows may show a security prompt ÔÇö click "More info" then "Run anyway".</p>
           </div>
         </div>
         <div class="setup-step">
@@ -753,14 +748,14 @@
           Why do I need to install a helper app?
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <div class="faq-a">Browser extensions can't process video files directly — they're sandboxed for security. The helper app (which runs locally on your machine) handles the actual video downloading and trimming using yt-dlp and ffmpeg. Your video data never leaves your computer.</div>
+        <div class="faq-a">Browser extensions can't process video files directly ÔÇö they're sandboxed for security. The helper app (which runs locally on your machine) handles the actual video downloading and trimming using yt-dlp and ffmpeg. Your video data never leaves your computer.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">
           Is it safe to run the helper app?
           <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
-        <div class="faq-a">Yes. The helper is open source and runs a simple local server on port 9999 that only accepts connections from your browser. It doesn't connect to any external servers. Windows SmartScreen may warn you because the app isn't code-signed yet — click "More info" then "Run anyway" to proceed.</div>
+        <div class="faq-a">Yes. The helper is open source and runs a simple local server on port 9999 that only accepts connections from your browser. It doesn't connect to any external servers. Windows SmartScreen may warn you because the app isn't code-signed yet ÔÇö click "More info" then "Run anyway" to proceed.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q">
@@ -799,8 +794,8 @@
   <!-- Footer -->
   <footer>
     <div class="footer-left">
-      <span>© 2026 SimplyClip</span>
-      <span>·</span>
+      <span>┬® 2026 SimplyClip</span>
+      <span>┬À</span>
       <span>Part of <a href="https://usesimplytools.com" target="_blank">usesimplytools.com</a></span>
     </div>
     <div class="footer-links">
