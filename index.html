@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SimplyClip — Clip & Download YouTube Videos</title>
+  <meta name="description" content="Clip and download any segment of any YouTube video. Select your quality, set your range, done. Free Chrome extension."/>
+  <meta property="og:title" content="SimplyClip — Clip & Download YouTube Videos"/>
+  <meta property="og:description" content="Clip and download any segment of any YouTube video. Select your quality, set your range, done."/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" type="image/png" sizes="128x128" href="favicon.png"/>
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png"/>
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #111111;
+      --bg2: #1a1a1a;
+      --bg3: #222222;
+      --burgundy: #700015;
+      --burgundy-light: #9b2337;
+      --text: #f0f0f0;
+      --text2: #888;
+      --text3: #555;
+      --border: rgba(255,255,255,0.07);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: rgba(17,17,17,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .nav-logo-mark {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .nav-logo-mark img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    .nav-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text2);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+
+    .nav-cta {
+      background: var(--burgundy) !important;
+      color: #fff !important;
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: background 0.2s !important;
+    }
+
+    .nav-cta:hover { background: var(--burgundy-light) !important; }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 40px 80px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(112,0,21,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(112,0,21,0.15);
+      border: 1px solid rgba(112,0,21,0.3);
+      color: #e88;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 32px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .hero-badge span {
+      width: 6px; height: 6px;
+      background: #e88;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(42px, 7vw, 80px);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      max-width: 800px;
+    }
+
+    h1 em {
+      font-style: normal;
+      color: var(--burgundy-light);
+    }
+
+    .hero-sub {
+      font-size: clamp(16px, 2vw, 20px);
+      color: var(--text2);
+      max-width: 500px;
+      margin-bottom: 48px;
+      font-weight: 300;
+      line-height: 1.7;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 80px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--burgundy);
+      color: #fff;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn-primary:hover {
+      background: var(--burgundy-light);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg3);
+      color: var(--text);
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 15px;
+      border: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .btn-secondary:hover { background: #2a2a2a; }
+
+    /* ── Screenshot ── */
+    .screenshot-wrap {
+      width: 100%;
+      max-width: 900px;
+      position: relative;
+    }
+
+    .screenshot-wrap::before {
+      content: '';
+      position: absolute;
+      inset: -1px;
+      border-radius: 17px;
+      background: linear-gradient(135deg, rgba(112,0,21,0.4), transparent 60%);
+      z-index: 0;
+    }
+
+    .screenshot-wrap img {
+      width: 100%;
+      border-radius: 16px;
+      display: block;
+      position: relative;
+      z-index: 1;
+      border: 1px solid var(--border);
+    }
+
+    .screenshot-caption {
+      margin-top: 16px;
+      font-size: 13px;
+      color: var(--text3);
+      text-align: center;
+    }
+
+    /* ── How it works ── */
+    .section {
+      padding: 100px 40px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--burgundy-light);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+    }
+
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(28px, 4vw, 44px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 60px;
+      line-height: 1.2;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+    }
+
+    .step {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 32px 28px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+
+    .step:hover { border-color: rgba(112,0,21,0.4); }
+
+    .step-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 48px;
+      font-weight: 800;
+      color: rgba(112,0,21,0.2);
+      line-height: 1;
+      margin-bottom: 16px;
+      letter-spacing: -0.03em;
+    }
+
+    .step h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 17px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .step p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── Features ── */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    .feature {
+      background: var(--bg);
+      padding: 36px 32px;
+      transition: background 0.2s;
+    }
+
+    .feature:hover { background: var(--bg2); }
+
+    .feature-icon {
+      width: 40px; height: 40px;
+      background: rgba(112,0,21,0.12);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      color: var(--burgundy-light);
+    }
+
+    .feature h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .feature p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    /* ── Setup section ── */
+    .setup-section {
+      padding: 100px 40px;
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .setup-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .setup-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-top: 48px;
+      position: relative;
+    }
+
+    .setup-steps::before {
+      content: '';
+      position: absolute;
+      left: 19px; top: 0; bottom: 0;
+      width: 2px;
+      background: var(--border);
+    }
+
+    .setup-step {
+      display: flex;
+      gap: 20px;
+      padding-bottom: 36px;
+      position: relative;
+    }
+
+    .setup-step:last-child { padding-bottom: 0; }
+
+    .setup-dot {
+      width: 40px; height: 40px;
+      background: var(--burgundy);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-family: 'Syne', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      z-index: 1;
+    }
+
+    .setup-content { padding-top: 8px; }
+
+    .setup-content h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .setup-content p {
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .setup-content a {
+      color: var(--burgundy-light);
+      text-decoration: none;
+    }
+
+    .setup-content a:hover { text-decoration: underline; }
+
+    /* ── FAQ ── */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .faq-item {
+      background: var(--bg);
+    }
+
+    .faq-q {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      color: var(--text);
+      padding: 22px 28px;
+      font-size: 15px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-family: 'DM Sans', sans-serif;
+      transition: background 0.15s;
+    }
+
+    .faq-q:hover { background: var(--bg2); }
+
+    .faq-icon {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      color: var(--text3);
+      transition: transform 0.2s;
+    }
+
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    .faq-a {
+      display: none;
+      padding: 0 28px 22px;
+      font-size: 14px;
+      color: var(--text2);
+      line-height: 1.7;
+    }
+
+    .faq-item.open .faq-a { display: block; }
+
+    /* ── Footer CTA ── */
+    .footer-cta {
+      padding: 120px 40px;
+      text-align: center;
+    }
+
+    .footer-cta h2 {
+      margin-bottom: 16px;
+    }
+
+    .footer-cta p {
+      color: var(--text2);
+      margin-bottom: 40px;
+      font-size: 16px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .footer-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text3);
+    }
+
+    .footer-left a {
+      color: var(--text3);
+      text-decoration: none;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      font-size: 13px;
+      color: var(--text3);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover { color: var(--text2); }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 100px 20px 60px; }
+      .section { padding: 60px 20px; }
+      .setup-section { padding: 60px 20px; }
+      .footer-cta { padding: 60px 20px; }
+      footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <a href="#" class="nav-logo">
+      <div class="nav-logo-mark">
+        <img src="logo.png" alt="SimplyClip" width="28" height="28"/>
+      </div>
+      <span class="nav-name">SimplyClip</span>
+    </a>
+    <ul class="nav-links">
+      <li><a href="#how-it-works">How it works</a></li>
+      <li><a href="#setup">Setup</a></li>
+      <li><a href="#faq">FAQ</a></li>
+      <li><a href="https://chromewebstore.google.com" target="_blank" class="nav-cta">Add to Chrome</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">
+      <span></span>
+      Free Chrome Extension
+    </div>
+    <h1>Clip any YouTube video.<br/><em>Keep exactly what you want.</em></h1>
+    <p class="hero-sub">Select a start and end point, choose your quality, download. No watermarks, no accounts, no nonsense.</p>
+    <div class="hero-actions">
+      <a href="https://chromewebstore.google.com" target="_blank" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+        </svg>
+        Add to Chrome — It's free
+      </a>
+      <a href="#setup" class="btn-secondary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        Setup guide
+      </a>
+    </div>
+    <div class="screenshot-wrap">
+      <img src="screenshot.png" alt="SimplyClip extension showing a YouTube video being clipped"/>
+      <p class="screenshot-caption">SimplyClip in action — clipping a segment from a YouTube video at 1080p</p>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="section" id="how-it-works">
+    <p class="section-label">How it works</p>
+    <h2>Three steps.<br/>That's it.</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Open any YouTube video</h3>
+        <p>Navigate to any YouTube video. SimplyClip adds a ✂ Clip button next to the Subscribe button automatically.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Set your clip range</h3>
+        <p>Drag the timeline handles or type exact timestamps. Choose your quality — 360p up to 1080p. Press <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">[</kbd> and <kbd style="background:#222;padding:2px 6px;border-radius:4px;font-size:12px;">]</kbd> while watching to mark your clip points.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Download</h3>
+        <p>Click Download Clip. Your MP4 saves directly to your Downloads folder. No ads, no redirects, no waiting.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section" style="padding-top: 0;">
+    <p class="section-label">Features</p>
+    <h2>Everything you need.<br/>Nothing you don't.</h2>
+    <div class="features">
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/>
+          </svg>
+        </div>
+        <h3>Quality selection</h3>
+        <p>Choose from 360p, 480p, 720p, or 1080p. Download small for sharing or high quality for keeping.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>
+          </svg>
+        </div>
+        <h3>Frame-accurate trimming</h3>
+        <p>Set start and end times to the exact second. What you select is exactly what you get.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/>
+          </svg>
+        </div>
+        <h3>Saves as MP4</h3>
+        <p>Downloads go straight to your Downloads folder as a proper MP4 file. Works everywhere.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <h3>No account needed</h3>
+        <p>No sign-up, no login, no subscription. Install the extension, download the helper, done.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <h3>Keyboard shortcuts</h3>
+        <p>Press <kbd style="background:#1a1a1a;padding:1px 5px;border-radius:3px;font-size:12px;">[</kbd> to mark the start and <kbd style="background:#1a1a1a;padding:1px 5px;border-radius:3px;font-size:12px;">]</kbd> to mark the end while watching. Then open SimplyClip and your range is already set.</p>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+          </svg>
+        </div>
+        <h3>Runs in background</h3>
+        <p>The helper app starts automatically when you turn on your computer. It's always ready.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Setup -->
+  <div class="setup-section" id="setup">
+    <div class="setup-inner">
+      <p class="section-label">Setup</p>
+      <h2 style="margin-bottom: 8px;">One-time setup.<br/>Works forever after.</h2>
+      <p style="color: var(--text2); font-size: 15px; margin-bottom: 0;">SimplyClip needs a small helper app to process downloads. You install it once and never think about it again.</p>
+      <div class="setup-steps">
+        <div class="setup-step">
+          <div class="setup-dot">1</div>
+          <div class="setup-content">
+            <h3>Add SimplyClip to Chrome</h3>
+            <p>Visit the <a href="https://chromewebstore.google.com" target="_blank">Chrome Web Store</a> and click "Add to Chrome". The ✂ Clip button will appear on YouTube automatically.</p>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-dot">2</div>
+          <div class="setup-content">
+            <h3>Download the helper app</h3>
+            <p>Click the SimplyClip icon in your Chrome toolbar, then click "Download Helper". Run the <code style="background:#1a1a1a;padding:2px 6px;border-radius:4px;font-size:12px;">SimplyClip_Helper.exe</code> file that downloads. Windows may show a security prompt — click "More info" then "Run anyway".</p>
+          </div>
+        </div>
+        <div class="setup-step">
+          <div class="setup-dot">3</div>
+          <div class="setup-content">
+            <h3>You're done</h3>
+            <p>The helper starts automatically every time you boot your computer. Look for the SC icon in your system tray. Go to YouTube and start clipping.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <section class="section" id="faq">
+    <p class="section-label">FAQ</p>
+    <h2>Common questions.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <button class="faq-q">
+          Is SimplyClip free?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Yes, completely free. No subscription, no premium tier, no watermarks.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Why do I need to install a helper app?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Browser extensions can't process video files directly — they're sandboxed for security. The helper app (which runs locally on your machine) handles the actual video downloading and trimming using yt-dlp and ffmpeg. Your video data never leaves your computer.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Is it safe to run the helper app?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">Yes. The helper is open source and runs a simple local server on port 9999 that only accepts connections from your browser. It doesn't connect to any external servers. Windows SmartScreen may warn you because the app isn't code-signed yet — click "More info" then "Run anyway" to proceed.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          What quality can I download?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">You can choose from 360p, 480p, 720p, or 1080p. Higher quality options (1440p, 4K) are coming in a future update.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Does it work on Mac?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">The Chrome extension works on Mac, but the helper app is currently Windows-only. Mac support is in development.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q">
+          Is downloading YouTube videos legal?
+          <svg class="faq-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <div class="faq-a">It depends on your jurisdiction and what you do with the downloaded content. Downloading for personal use is generally accepted in many countries. You are responsible for ensuring you have the right to download any content you clip. SimplyClip should not be used to infringe on copyright.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="footer-cta">
+    <p class="section-label">Get started</p>
+    <h2>Start clipping today.</h2>
+    <p>Free. No account. Works in 3 minutes.</p>
+    <a href="https://chromewebstore.google.com" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 32px;">
+      Add SimplyClip to Chrome
+    </a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-left">
+      <span>© 2026 SimplyClip</span>
+      <span>·</span>
+      <span>Part of <a href="https://usesimplytools.com" target="_blank">usesimplytools.com</a></span>
+    </div>
+    <div class="footer-links">
+      <a href="https://tally.so/r/lbY7ZV" target="_blank">Report a bug</a>
+      <a href="https://tally.so/r/9qREPE" target="_blank">Feature request</a>
+      <a href="mailto:hello@usesimplytools.com">Contact</a>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ accordion
+    document.querySelectorAll('.faq-q').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+        if (!isOpen) item.classList.add('open');
+      });
+    });
+
+    // Fade in on scroll
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.step, .feature, .setup-step').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
