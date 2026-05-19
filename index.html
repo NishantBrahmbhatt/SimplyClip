@@ -137,6 +137,7 @@
     .hero-badge {
       display: inline-flex;
       align-items: center;
+      gap: 6px;
       background: rgba(112,0,21,0.15);
       border: 1px solid rgba(112,0,21,0.3);
       color: #e88;
@@ -156,6 +157,18 @@
       background: rgba(112,0,21,0.25);
       border-color: rgba(112,0,21,0.5);
       color: #f0c0c8;
+    }
+
+    .hero-badge span {
+      width: 6px; height: 6px;
+      background: #e88;
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
     }
 
     h1 {
@@ -575,21 +588,24 @@
       <li><a href="#how-it-works">How it works</a></li>
       <li><a href="#setup">Setup</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="https://chromewebstore.google.com" target="_blank" class="nav-cta">Add to Chrome</a></li>
+      <li><a href="/downloads/SimplyClip_Extension.zip" download="SimplyClip_Extension.zip" class="nav-cta">Add to Chrome</a></li>
     </ul>
   </nav>
 
   <!-- Hero -->
   <section class="hero">
-    <a href="https://chromewebstore.google.com/search?q=SimplyClip" target="_blank" rel="noopener noreferrer" class="hero-badge">
+    <a href="/downloads/SimplyClip_Extension.zip" download="SimplyClip_Extension.zip" class="hero-badge" style="text-decoration:none;cursor:pointer;">
+      <span></span>
       Free Chrome Extension
     </a>
     <h1>Clip any YouTube video.<br/><em>Keep exactly what you want.</em></h1>
     <p class="hero-sub">Select a start and end point, choose your quality, download. No watermarks, no accounts, no nonsense.</p>
     <div class="hero-actions">
-      <a href="https://chromewebstore.google.com" target="_blank" class="btn-primary">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/>
+      <a href="/downloads/SimplyClip_Extension.zip" download="SimplyClip_Extension.zip" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
         Add to Chrome — It's free
       </a>
